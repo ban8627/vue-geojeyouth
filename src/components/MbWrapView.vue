@@ -84,8 +84,51 @@
 </template>
 
 <script>
+import {onMounted} from 'vue'
+import $ from 'jquery'
 export default {
-
+  setup(){
+    onMounted(()=>{
+  $('.mb-bt').click(function (e) {
+    e.preventDefault();
+    $(this).toggleClass('mb-bt-open');
+    $('.mb-dim').toggleClass('mb-dim-open');
+    $('.mb-wrap').toggleClass('mb-wrap-open');
+  });
+  let mb_mainmenu = $('.mb-mainmenu');
+  let mb_submenu = $('.mb-submenu');
+  let mb_submenu_high = [];
+  $.each(mb_submenu, function (index) {
+    let count = $(this).find('li').length;
+    mb_submenu_high[index] = (56 * count);
+  });
+  let mb_li = $('.mb-menu > li');
+  $.each(mb_mainmenu, function (index) {
+    $(this).click(function (e) {
+      e.preventDefault();
+      $(this).toggleClass('mb-mainmenu-open');
+      let active = $(this).hasClass('mb-mainmenu-open');
+      if (active == true) {
+        let temp = mb_submenu_high[index];
+        mb_li.eq(index).height(temp + 60);
+      } else {
+        mb_li.eq(index).height(60);
+      }
+    });
+  });
+  $(window).resize(function () {
+    let temp = $(window).width();
+    if (temp > 1000) {
+      $('.mb-bt').removeClass('mb-bt-open');
+      $('.mb-dim').removeClass('mb-dim-open');
+      $('.mb-wrap').removeClass('mb-wrap-open');
+      $('.mb-menu>li').height(60);
+      $('.mb-mainmenu').removeClass('mb-mainmenu-open');
+    }
+  });
+    })
+    return {}
+  }
 }
 </script>
 
@@ -212,5 +255,9 @@ export default {
 .mb-dim-open {
   display: block;
 }
-
+@media all and (max-width: 1000px) {
+        .mb-bt {
+            display: block;
+        }
+}
 </style>

@@ -1,13 +1,11 @@
 <template>
       <footer class="footer">
       <div class="inner">
-
         <ul class="footer-menu clearfix">
           <li><a href="#">개인정보처리방침</a></li>
           <li><a href="#">이용약관</a></li>
           <li><a href="#">이메일무단수집거부</a></li>
         </ul>
-
         <p>
           <ul class="footer-addr">
             <li>
@@ -21,24 +19,32 @@
             </li>
           </ul>
         </p>
-
-        <button class="gotop">
+        <button class="gotop" @click="goTop">
         </button>
-
       </div>
-
       <hr class="f-hr">
-
       <div class="inner">
         <span class="copy"> Copyright © <strong>거제청년센터이룸</strong>. All right reserved.</span>
       </div>
-
     </footer>
 </template>
 
 <script>
+import $ from 'jquery'
+import { onMounted } from 'vue'
 export default {
-
+  setup(){
+    onMounted(()=>{
+      $('.gotop').click(function() {
+        console.log()
+      $('html').animate({
+        scrollTop: 0
+      }, 1000);
+  });
+    })
+    return {
+    }
+  }
 }
 </script>
 

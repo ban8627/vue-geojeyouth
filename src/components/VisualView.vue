@@ -145,5 +145,8 @@
     .visual {
       height: 50vw;
     }
+    .sw-visual a {
+      background-size: contain;
+    }
   }
 </style>
