@@ -4,76 +4,12 @@
             <a href="#" class="logo"></a>
             <div class="gnb">
                 <ul class="menu">
-                    <li>
-                        <a href="#" class="mainmenu">청년센터</a>
+                    <li v-for="(obj,index) in menuData" :key="index">
+                        <a :href="obj.mainlink" v-html="obj.maintxt" class="mainmenu"></a>
                         <ul class="submenu">
-                            <li><a href="#">청년센터소개</a></li>
-                            <li><a href="#">프로그램안내</a></li>
-                            <li><a href="#">보유도서목록</a></li>
-                            <li><a href="#">공간안내</a></li>
-                            <li><a href="#">오시는길</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#" class="mainmenu">청년정책</a>
-                        <ul class="submenu">
-                            <li><a href="#">정책소식</a></li>
-                            <li><a href="#">분야별 청년정책</a></li>
-                            <li><a href="#">청년네트워크 소개</a></li>
-                            <li><a href="#">청년주요활동</a></li>
-                            <li><a href="#">청년정책 검색</a></li>
-                            <li><a href="#">아카이브</a></li>
-                            <li><a href="#">청춘다락</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#" class="mainmenu">청년일자리</a>
-                        <ul class="submenu">
-                            <li><a href="#">일자리정책</a></li>
-                            <li><a href="#">구인 및 구직 등록</a></li>
-                            <li><a href="#">채용정보</a></li>
-                            <li><a href="#">교육훈련</a></li>
-                            <li><a href="#">창업정보</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#" class="mainmenu">사업소개</a>
-                        <ul class="submenu">
-                            <li><a href="#">사업안내</a></li>
-                            <li><a href="#">사업일정표</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#" class="mainmenu">공간예약</a>
-                        <ul class="submenu">
-                            <li><a href="#">공간신청</a></li>
-                            <li><a href="#">공간신청 현황</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#" class="mainmenu">커뮤니티</a>
-                        <ul class="submenu">
-                            <li><a href="#">이룸소식</a></li>
-                            <li><a href="#">자유게시판</a></li>
-                            <li><a href="#">활동갤러리</a></li>
-                            <li><a href="#">청년뉴스</a></li>
-                            <li><a href="#">동영상자료</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#" class="mainmenu">청년창업공간(<span style="color:#ff8000">내</span><span
-                                style="color:#0365ad">꿈</span><span style="color:#93be49">공</span><span
-                                style="color:#f35c8a">간</span>)</a>
-                        <ul class="submenu">
-                            <li><a href="#"><span style="color:#ff8000">내</span><span
-                                        style="color:#0365ad">꿈</span><span style="color:#93be49">공</span><span
-                                        style="color:#f35c8a">간</span> 소개</a></li>
-                            <li><a href="#"><span style="color:#ff8000">내</span><span
-                                        style="color:#0365ad">꿈</span><span style="color:#93be49">공</span><span
-                                        style="color:#f35c8a">간</span> 대관신청</a></li>
-                            <li><a href="#"><span style="color:#ff8000">내</span><span
-                                        style="color:#0365ad">꿈</span><span style="color:#93be49">공</span><span
-                                        style="color:#f35c8a">간</span> 대관현황</a></li>
+                            <li v-for="(subobj,subindex) in obj.submenu" :key="subindex">
+                                <a :href="subobj.sublink" v-html="subobj.subtxt"></a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -92,10 +28,13 @@
 <script>
     import $ from 'jquery'
     import {
-        onMounted
+        computed, onMounted
     } from 'vue'
+    import {useStore} from 'vuex'
     export default {
         setup() {
+            const store = useStore();
+            const menuData = computed(()=>store.getters.getMenuData)
             onMounted(() => {
                 let more_wrap = $('.more-wrap');
                 let member_more = $('.member-more');
@@ -115,7 +54,9 @@
                     event.stopPropagation();
                 });
             })
-            return {}
+            return {
+                menuData
+            }
         }
     }
 </script>

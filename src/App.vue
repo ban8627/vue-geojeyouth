@@ -33,6 +33,14 @@
   import MoreWrapView from '@/components/MoreWrapView.vue';
   import MbBt from '@/components/MbBt.vue';
   import MbWrapView from '@/components/MbWrapView.vue';
+
+  import $ from 'jquery'
+  import {
+    useStore
+  } from 'vuex'
+  import {
+    onUpdated
+  } from 'vue'
   export default {
     name: 'App',
     components: {
@@ -48,6 +56,23 @@
       MbWrapView
     },
     setup() {
+      const store = useStore();
+      store.dispatch('fetchGetMenu');
+      store.dispatch('fetchGetInfo')
+      store.dispatch('fetchGetNews')
+      onUpdated(() => {
+        $(window).resize(function () {
+          let temp = $(window).width();
+          if (temp > 1000) {
+            $('.mb-bt').removeClass('mb-bt-open');
+            $('.mb-dim').removeClass('mb-dim-open');
+            $('.mb-wrap').removeClass('mb-wrap-open');
+            $('.mb-menu>li').height(60);
+            $('.mb-mainmenu').removeClass('mb-mainmenu-open');
+          }
+        });
+      })
+
       return {}
     }
   }

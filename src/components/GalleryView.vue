@@ -5,41 +5,15 @@
         <h3>활동 갤러리</h3>
         <a href="#" class="gallery-more">전체보기</a>
         <ul class="gallery-list clearfix">
-          <li>
-            <a href="#" id="gallery-list-01">
-              <span class="gallery-img gallery-1"></span>
+          <li v-for="(obj,index) in galleryData" :key="index">
+            <a :href="obj.glink" id="gallery-list-01">
+              <span class="gallery-img" :style="{backgroundImage:'url('+ require(`@/assets/images/${obj.gimg}`) +')'}"></span>
               <p class="gallery-cont">
                 <span class="gallery-title">
-                  3월 인문학 특강 [우리 삶에 철학이 필요한 이유]
+                  {{obj.gtitle}}
                 </span>
                 <span class="gallery-date">
-                  2021-12-14
-                </span>
-              </p>
-            </a>
-          </li>
-          <li>
-            <a href="#" id="gallery-list-02">
-              <span class="gallery-img gallery-2"></span>
-              <p class="gallery-cont">
-                <span class="gallery-title">
-                  3월 인문학 특강 [우리 삶에 철학이 필요한 이유]
-                </span>
-                <span class="gallery-date">
-                  2021-12-14
-                </span>
-              </p>
-            </a>
-          </li>
-          <li>
-            <a href="#" id="gallery-list-03">
-              <span class="gallery-img gallery-3"></span>
-              <p class="gallery-cont">
-                <span class="gallery-title">
-                  3월 인문학 특강 [우리 삶에 철학이 필요한 이유]
-                </span>
-                <span class="gallery-date">
-                  2021-12-14
+                  {{obj.gdate}}
                 </span>
               </p>
             </a>
@@ -62,8 +36,17 @@
 </template>
 
 <script>
+import {useStore} from 'vuex'
+import {computed} from 'vue'
   export default {
-
+    setup(){
+      const store = useStore();
+      const galleryData = computed(()=>store.getters.getGalleryData)
+      store.dispatch('fetchGetGallery')
+      return {
+        galleryData
+      }
+    }
   }
 </script>
 
@@ -166,23 +149,9 @@
     width: 100%;
     height: 195px;
     transition: all 0.5s;
-  }
+    background-size:cover;
 
-  .gallery-1 {
-    background: url('@/assets/images/gallery_1.jpg') no-repeat center;
-    background-size: cover;
   }
-
-  .gallery-2 {
-    background: url('@/assets/images/gallery_2.jpg') no-repeat center;
-    background-size: cover;
-  }
-
-  .gallery-3 {
-    background: url('@/assets/images/gallery_3.jpg') no-repeat center;
-    background-size: cover;
-  }
-
   .gallery-cont {
     position: relative;
     display: block;

@@ -7,22 +7,19 @@
       }" :effect="'fade'" :pagination="{
       el:'.sw-visual-pg',
       type:'bullets',
-      clickable: true,}" class="sw-visual">
-      <SwiperSlide>
-        <a href="#" class="vs-1"></a>
-      </SwiperSlide>
-      <SwiperSlide>
-        <a href="#" class="vs-2"></a>
-      </SwiperSlide>
-      <SwiperSlide>
-        <a href="#" class="vs-3"></a>
-      </SwiperSlide>
+      clickable: true}" @swiper="swVisual" class="sw-visual">
+      <swiper-slide v-for="(obj,index) in visualData" :key="index">
+        <a :href="obj.vlink" :style="{backgroundImage:'url(' + require(`@/assets/images/${obj.vbg}`) + ')'}"></a>
+      </swiper-slide>
       <!-- 슬라이더 페이지네이션 -->
       <div class="sw-visual-control">
         <div class="sw-visual-pg"></div>
         <button class="sw-visual-bt">
-          <span class="material-icons-outlined">
-            pause
+          <!-- 슬라이더 클릭시 play / start -->
+          <span class="material-icons-outlined" @click="controlSlide">
+            <!-- 클릭시 아이콘 모양을 바꾸기 위함 -->
+            <!-- 구글 아이콘인 경우만 해당 -->
+            {{slideState}}
           </span>
         </button>
       </div>
@@ -32,11 +29,12 @@
 
 <script>
   import {
-    onUpdated
+    ref,
+    computed
   } from 'vue'
   import {
     Swiper,
-    SwiperSlide,
+    SwiperSlide
   } from 'swiper/vue';
   import {
     Autoplay,
@@ -46,19 +44,45 @@
   import 'swiper/css';
   import "swiper/css/effect-fade";
   import 'swiper/css/pagination';
+
+  import {
+    useStore
+  } from 'vuex'
   export default {
     components: {
       Swiper,
       SwiperSlide
     },
     setup() {
-      onUpdated(() => {
+      // Swiper 를 저장하려는 용도
+      const slide = ref(null);
+      // Swiper 객체를 저장하기 위한 용도
+      const swVisual = (swiper) => {
+        // ref 라서 .value 로 저장이 됨
+        slide.value = swiper
+      }
+      const slideState = ref('pause')
+      const controlSlide = () => {
+        if (slide.value.autoplay.running) {
+          slide.value.autoplay.stop()
+          slideState.value = 'play_arrow'
+        } else {
+          slide.value.autoplay.start()
+          slideState.value = 'pause'
+        }
+      }
 
-      })
+      const store = useStore();
+      store.dispatch('fetchGetVisual');
+      const visualData = computed(() => store.getters.getVisualData)
       return {
         modules: [
           Autoplay, Pagination, EffectFade
-        ]
+        ],
+        swVisual,
+        controlSlide,
+        slideState,
+        visualData
       }
     }
   }
@@ -82,9 +106,11 @@
     display: block;
     width: 100%;
     height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
-  .vs-1 {
+  /* .vs-1 {
     background: url('@/assets/images/banner_1_20200915_0.jpg') no-repeat center;
     background-size: cover;
   }
@@ -97,7 +123,7 @@
   .vs-3 {
     background: url('@/assets/images/banner_4_20200915_0.jpg') no-repeat center;
     background-size: cover;
-  }
+  } */
 
   .sw-visual-control {
     position: absolute;
@@ -107,10 +133,12 @@
     display: block;
     z-index: 9;
   }
-.sw-visual-pg {
-  display: inline-block;
-  width: auto !important;
-}
+
+  .sw-visual-pg {
+    display: inline-block;
+    width: auto !important;
+  }
+
   .sw-visual-pg .swiper-pagination-bullet {
     width: 12px;
     height: 12px;
@@ -123,17 +151,17 @@
     opacity: 1.0;
   }
 
-.sw-visual-bt {
-  position: relative;
-  display: inline-block;
-  width: 23px;
-  height: 22px;
-  vertical-align: bottom;
-  background: transparent;
-  cursor: pointer;
-  border: 0;
-  color:#fff;
-}
+  .sw-visual-bt {
+    position: relative;
+    display: inline-block;
+    width: 23px;
+    height: 22px;
+    vertical-align: bottom;
+    background: transparent;
+    cursor: pointer;
+    border: 0;
+    color: #fff;
+  }
 
   .sw-visual-bt-play {
     background: url('@/assets/images/play.png') no-repeat center;
@@ -143,10 +171,23 @@
   /* visual 반응형 버전 */
   @media all and (max-width: 1400px) {
     .visual {
+      height: 40vw;
+    }
+
+    .sw-visual a {
+      background-size: 140%;
+      background-position: center;
+    }
+  }
+
+  @media all and (max-width: 1000px) {
+    .visual {
       height: 50vw;
     }
+
     .sw-visual a {
-      background-size: contain;
+      background-size: 140% 90%;
+      background-position: 50% 60%;
     }
   }
 </style>

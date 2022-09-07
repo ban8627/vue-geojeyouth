@@ -9,8 +9,8 @@
             <i class="fas fa-angle-left"></i>
           </button>
           <button class="sw-banner-pause">
-            <span class="material-icons">
-              play_arrow
+            <span class="material-icons" @click="controlSlide">
+              {{slideState}}
             </span>
           </button>
           <button class="sw-banner-next">
@@ -89,15 +89,35 @@ import {ref} from 'vue'
       SwiperSlide
     },
     setup() {
+      // Swiper 참조
       const slide = ref(null);
+
       const swBanner = (swiper)=>{
+        // Swiper 개체를 저장
         slide.value = swiper;
       }
+      // Swiper 의 start , stop 제어
+      const slideState = ref('pause');
+      const controlSlide=()=>{
+        if(slide.value.autoplay.running){
+          slide.value.autoplay.stop()
+          slideState.value = 'play_arrow'
+        }else {
+          slide.value.autoplay.start()
+          slideState.value = 'pause'
+        }
+        // console.log(slide.value.autoplay)
+        // slide.value.autoplay.running = true;
+        // slide.value.autoplay.running = false;
+      }
+
       return {
         modules: [
           Autoplay, Pagination, Navigation
         ],
-        swBanner
+        swBanner,
+        controlSlide,
+        slideState
       }
     }
   }
