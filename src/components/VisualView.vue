@@ -8,8 +8,9 @@
       el:'.sw-visual-pg',
       type:'bullets',
       clickable: true}" @swiper="swVisual" class="sw-visual">
-      <swiper-slide v-for="(obj,index) in visualData" :key="index">
-        <a :href="obj.vlink" :style="{backgroundImage:'url(' + require(`@/assets/images/${obj.vbg}`) + ')'}"></a>
+      <swiper-slide v-for="(obj,index) in visualData" :key="index" class="swiper-slide">
+        <a :href="obj.vlink" :style="{
+          backgroundImage:`url(${ resW ? obj.vbg : obj.mvbg})`, backgroundSize:'cover'}" :data-bg-mb="obj.mvbg" :data-bg="obj.vbg"></a>
       </swiper-slide>
       <!-- 슬라이더 페이지네이션 -->
       <div class="sw-visual-control">
@@ -30,7 +31,8 @@
 <script>
   import {
     ref,
-    computed
+    computed,
+    onMounted
   } from 'vue'
   import {
     Swiper,
@@ -44,7 +46,6 @@
   import 'swiper/css';
   import "swiper/css/effect-fade";
   import 'swiper/css/pagination';
-
   import {
     useStore
   } from 'vuex'
@@ -60,6 +61,7 @@
       const swVisual = (swiper) => {
         // ref 라서 .value 로 저장이 됨
         slide.value = swiper
+        slide.value.slideTo(1)
       }
       const slideState = ref('pause')
       const controlSlide = () => {
@@ -73,8 +75,33 @@
       }
 
       const store = useStore();
-      store.dispatch('fetchGetVisual');
+      
       const visualData = computed(() => store.getters.getVisualData)
+
+      // 현재 1400보다 크면 true, 작으면 false
+      const resW = ref(true);
+
+      onMounted( () => {
+        // checkWin 메서드 : resW 체크 하는 메서드
+        const checkWin = () => {
+          let w = window.innerWidth;
+          if(w <= 1400) {
+            // 1400 같거나 작으면
+            resW.value = false;            
+          }else{
+            // 1400 보다 크다
+            resW.value = true;            
+          }
+          console.log(w)
+          console.log(resW.value)
+        }
+        // 윈도우에 resize 이벤트 연결
+        window.addEventListener('resize', checkWin);
+
+        // 최초 1회 실행
+        checkWin();
+      })
+
       return {
         modules: [
           Autoplay, Pagination, EffectFade
@@ -82,7 +109,8 @@
         swVisual,
         controlSlide,
         slideState,
-        visualData
+        visualData,
+        resW
       }
     }
   }
@@ -107,23 +135,9 @@
     width: 100%;
     height: 100%;
     background-repeat: no-repeat;
+    background-position: center;
     background-size: cover;
   }
-
-  /* .vs-1 {
-    background: url('@/assets/images/banner_1_20200915_0.jpg') no-repeat center;
-    background-size: cover;
-  }
-
-  .vs-2 {
-    background: url('@/assets/images/banner_2_20200915_0.jpg') no-repeat center;
-    background-size: cover;
-  }
-
-  .vs-3 {
-    background: url('@/assets/images/banner_4_20200915_0.jpg') no-repeat center;
-    background-size: cover;
-  } */
 
   .sw-visual-control {
     position: absolute;
@@ -171,23 +185,7 @@
   /* visual 반응형 버전 */
   @media all and (max-width: 1400px) {
     .visual {
-      height: 40vw;
-    }
-
-    .sw-visual a {
-      background-size: 140%;
-      background-position: center;
-    }
-  }
-
-  @media all and (max-width: 1000px) {
-    .visual {
       height: 50vw;
     }
-
-    .sw-visual a {
-      background-size: 140% 90%;
-      background-position: 50% 60%;
     }
-  }
 </style>

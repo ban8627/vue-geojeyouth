@@ -60,6 +60,9 @@
       store.dispatch('fetchGetMenu');
       store.dispatch('fetchGetInfo')
       store.dispatch('fetchGetNews')
+      store.dispatch('fetchGetGallery')
+      store.dispatch('fetchGetVisual');
+      store.dispatch('fetchGetMovie');
       onUpdated(() => {
         $(window).resize(function () {
           let temp = $(window).width();

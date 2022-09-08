@@ -7,7 +7,7 @@
         <ul class="gallery-list clearfix">
           <li v-for="(obj,index) in galleryData" :key="index">
             <a :href="obj.glink" id="gallery-list-01">
-              <span class="gallery-img" :style="{backgroundImage:'url('+ require(`@/assets/images/${obj.gimg}`) +')'}"></span>
+              <span class="gallery-img" :style="{backgroundImage:`url(${obj.gimg})`}"></span>
               <p class="gallery-cont">
                 <span class="gallery-title">
                   {{obj.gtitle}}
@@ -24,7 +24,7 @@
         <h3>동영상 갤러리</h3>
         <a href="#" class="gallery-more">전체보기</a>
         <div class="gallery-video">
-          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/0-q1KafFCLU"
+          <iframe width="100%" height="100%" :src="movieData.movie_url"
             title="YouTube video player" frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen></iframe>
@@ -42,9 +42,10 @@ import {computed} from 'vue'
     setup(){
       const store = useStore();
       const galleryData = computed(()=>store.getters.getGalleryData)
-      store.dispatch('fetchGetGallery')
+      const movieData = computed(()=>store.getters.getMovieData)
       return {
-        galleryData
+        galleryData,
+        movieData
       }
     }
   }

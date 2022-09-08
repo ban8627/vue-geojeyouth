@@ -11,7 +11,9 @@ export default createStore({
     visualDataArr: [],
     infoDataArr:[],
     newsDataArr:[],
-    galleryDataArr:[]
+    galleryDataArr: [],
+    movieData:{},
+    bannerDataArr:[]
   },
   // 외부 json 및 서버연동axios 호출시점
   // mutations 을 commit 으로 호출하면서 데이터를 전달한다.
@@ -52,6 +54,20 @@ export default createStore({
         commit('UPDATE_GALLERY_DATA',res.data)
         })
         .catch(err=>console.log(err))
+    },
+    fetchGetMovie({ commit }) {
+      axios.get('./data/movie.json')
+        .then(res => {
+        commit('UPDATE_MOVIE_DATA',res.data)
+        })
+        .catch(err=>console.log(err))
+    },
+    fetchGetBanner({ commit }) {
+      axios.get('./data/banner.json')
+        .then(res => {
+        commit("UPDATE_BANNER_DATA",res.data)
+        })
+        .catch(err=>console.log(err))
     }
   },
   // actions 로 부터 데이터를 전송받고 state 를 업데이트
@@ -71,6 +87,12 @@ export default createStore({
     },
     UPDATE_NEWS_DATA(state, payload) {
       state.newsDataArr = payload
+    },
+    UPDATE_MOVIE_DATA(state, payload) {
+      state.movieData = payload
+    },
+    UPDATE_BANNER_DATA(state, payload) {
+      state.bannerDataArr = payload
     }
   },
   // 외부 컴포넌트에서 state 를 참조할때 활용
@@ -90,6 +112,12 @@ export default createStore({
     },
     getGalleryData(state) {
       return state.galleryDataArr
+    },
+    getMovieData(state) {
+      return state.movieData
+    },
+    getBannerData(state) {
+      return state.bannerDataArr
     }
   }
 })

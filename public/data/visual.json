@@ -1,13 +1,16 @@
 [{
  "vlink": "#",
- "vbg": "banner_1_20200915_0.jpg"
+ "vbg": "./images/banner_1_20200915_0.jpg",
+ "mvbg":"./images/m_bannerm_1_20200915_0.jpg"
 },
 {
  "vlink": "#",
- "vbg": "banner_2_20200915_0.jpg"
+ "vbg": "./images/banner_2_20200915_0.jpg",
+ "mvbg":"./images/m_bannerm_2_20200915_0.jpg"
 },
 {
  "vlink": "#",
- "vbg": "banner_4_20200915_0.jpg"
+ "vbg": "./images/banner_4_20200915_0.jpg",
+ "mvbg":"./images/m_bannerm_4_20200915_0.jpg"
 }
 ]

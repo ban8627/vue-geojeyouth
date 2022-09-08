@@ -1,19 +1,19 @@
 [
  {
   "glink":"#",
-  "gimg":"gallery_1.jpg",
+  "gimg":"./images/gallery_1.jpg",
   "gtitle":"3월 인문학 특강 [우리 삶에 철학이 필요한 이유]",
   "gdate":"2021-12-14"
  },
  {
   "glink":"#",
-  "gimg":"gallery_2.jpg",
+  "gimg":"./images/gallery_2.jpg",
   "gtitle":"12월 문화특강 주간 ♡ 크리스마스 입욕제 만들기",
   "gdate":"2021-12-14"
  },
  {
   "glink":"#",
-  "gimg":"gallery_3.jpg",
+  "gimg":"./images/gallery_3.jpg",
   "gtitle":"12월 문화특강 주간 ♡ 플레이팅 도마 만들기",
   "gdate":"2021-12-14"
  }

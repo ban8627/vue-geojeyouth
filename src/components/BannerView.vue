@@ -36,32 +36,8 @@
     }" 
     @swiper="swBanner"
     class="sw-banner">
-          <swiper-slide>
-            <a href="#" class="banner-0"></a>
-          </swiper-slide>
-          <swiper-slide>
-            <a href="#" class="banner-1"></a>
-          </swiper-slide>
-          <swiper-slide>
-            <a href="#" class="banner-2"></a>
-          </swiper-slide>
-          <swiper-slide>
-            <a href="#" class="banner-3"></a>
-          </swiper-slide>
-          <swiper-slide>
-            <a href="#" class="banner-4"></a>
-          </swiper-slide>
-          <swiper-slide>
-            <a href="#" class="banner-5"></a>
-          </swiper-slide>
-          <swiper-slide>
-            <a href="#" class="banner-6"></a>
-          </swiper-slide>
-          <swiper-slide>
-            <a href="#" class="banner-7"></a>
-          </swiper-slide>
-          <swiper-slide>
-            <a href="#" class="banner-8"></a>
+          <swiper-slide v-for="(obj,index) in bannerData" :key="index">
+            <a :href="obj.blink" :alt="obj.balt" :style="{backgroundImage:'url('+require(`@/assets/images/${obj.bbg}`)  +')'}"></a>
           </swiper-slide>
         </Swiper>
       </div>
@@ -70,7 +46,7 @@
 </template>
 
 <script>
-import {ref} from 'vue'
+import {ref,computed} from 'vue'
   import {
     Swiper,
     SwiperSlide
@@ -83,6 +59,7 @@ import {ref} from 'vue'
   import 'swiper/css';
   import 'swiper/css/pagination';
   import 'swiper/css/navigation';
+  import {useStore} from 'vuex'
   export default {
     components: {
       Swiper,
@@ -110,14 +87,17 @@ import {ref} from 'vue'
         // slide.value.autoplay.running = true;
         // slide.value.autoplay.running = false;
       }
-
+      const store = useStore()
+      const bannerData = computed(()=>store.getters.getBannerData)
+      store.dispatch('fetchGetBanner')
       return {
         modules: [
           Autoplay, Pagination, Navigation
         ],
         swBanner,
         controlSlide,
-        slideState
+        slideState,
+        bannerData
       }
     }
   }
@@ -223,51 +203,6 @@ import {ref} from 'vue'
     display: block;
     height: 57px;
     border: 1px solid #e9e9e9;
-  }
-
-  .banner-0 {
-    background: url('@/assets/images/img_banner01.gif') no-repeat center;
-    background-size: cover;
-  }
-
-  .banner-1 {
-    background: url('@/assets/images/img_banner02.gif') no-repeat center;
-    background-size: cover;
-  }
-
-  .banner-2 {
-    background: url('@/assets/images/img_banner03.gif') no-repeat center;
-    background-size: cover;
-  }
-
-  .banner-3 {
-    background: url('@/assets/images/img_banner04.gif') no-repeat center;
-    background-size: cover;
-  }
-
-  .banner-4 {
-    background: url('@/assets/images/img_banner05.gif') no-repeat center;
-    background-size: cover;
-  }
-
-  .banner-5 {
-    background: url('@/assets/images/img_banner06.gif') no-repeat center;
-    background-size: cover;
-  }
-
-  .banner-6 {
-    background: url('@/assets/images/img_banner07.gif') no-repeat center;
-    background-size: cover;
-  }
-
-  .banner-7 {
-    background: url('@/assets/images/img_banner08.gif') no-repeat center;
-    background-size: cover;
-  }
-
-  .banner-8 {
-    background: url('@/assets/images/img_banner09.gif') no-repeat center;
-    background-size: cover;
   }
 
   /* 배너 PC 영역 */
