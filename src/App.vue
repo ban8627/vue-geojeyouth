@@ -1,5 +1,6 @@
 <template>
   <div>
+    <ModalView/>
     <more-wrap-view></more-wrap-view>
     <mb-bt></mb-bt>
     <mb-wrap-view></mb-wrap-view>
@@ -23,6 +24,7 @@
 </template>
 
 <script>
+import ModalView from '@/components/ModalView.vue';
   import HeaderView from '@/components/HeaderView.vue';
   import VisualView from '@/components/VisualView.vue';
   import QuickMenuView from '@/components/QuickMenuView.vue';
@@ -44,6 +46,7 @@
   export default {
     name: 'App',
     components: {
+      ModalView,
       HeaderView,
       VisualView,
       QuickMenuView,
