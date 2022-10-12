@@ -34,7 +34,7 @@ export default {
 
       modalClose.click(() => {
         modalWrap.stop().fadeOut(100);
-        $("html").css("overflow", "hidden");
+        $("html").css("overflow", "auto");
       });
 
       const modalMain = $(".modal-main");
